@@ -281,7 +281,7 @@ ${menuFormatted}
 
     // 5. Generate content using Gemini API (with robust multi-model fallback)
     let response;
-    const modelsToTry = ['gemini-2.5-flash', 'gemini-2.5-pro', 'gemini-2.0-flash', 'gemini-2.0-flash-lite'];
+    const modelsToTry = ['gemini-2.5-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite'];
     let lastError = null;
 
     for (const modelName of modelsToTry) {
