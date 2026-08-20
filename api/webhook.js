@@ -81,15 +81,13 @@ module.exports = async (req, res) => {
       return res.status(200).json({ status: 'ignored_group_chat' });
     }
 
-    // White-list filter (optional): if ALLOWED_PHONES is set, bot will ONLY reply to listed numbers
-    const allowedPhonesStr = process.env.ALLOWED_PHONES || '';
-    if (allowedPhonesStr.trim()) {
-      const allowedDigitsList = allowedPhonesStr.split(',').map(p => p.trim().replace(/\D/g, '').slice(-9));
-      const incomingDigits = phone.replace(/\D/g, '').slice(-9);
-      if (incomingDigits && !allowedDigitsList.includes(incomingDigits)) {
-        console.log(`Phone ${phone} (${incomingDigits}) not in ALLOWED_PHONES list (${allowedPhonesStr}). Bot ignored message.`);
-        return res.status(200).json({ status: 'phone_not_allowed', phone });
-      }
+    // White-list filter: bot ONLY replies to allowed test numbers
+    const allowedPhonesStr = process.env.ALLOWED_PHONES || '+77073137879';
+    const allowedDigitsList = allowedPhonesStr.split(',').map(p => p.trim().replace(/\D/g, '').slice(-8));
+    const incomingDigits = phone.replace(/\D/g, '').slice(-8);
+    if (incomingDigits && !allowedDigitsList.includes(incomingDigits)) {
+      console.log(`Phone ${phone} (${incomingDigits}) not in ALLOWED_PHONES list (${allowedPhonesStr}). Bot ignored message.`);
+      return res.status(200).json({ status: 'phone_not_allowed', phone });
     }
     let mediaPart = null;
 
