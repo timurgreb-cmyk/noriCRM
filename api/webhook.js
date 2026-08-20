@@ -426,8 +426,8 @@ ${menuFormatted}
 
     // 10. Send PDF file via Green-API if requested
     if (shouldSendPdf) {
-      const pdfUrl = process.env.PUBLIC_MENU_PDF_URL || 'https://noricrm.vercel.app/menu.pdf';
-      await sendWhatsAppFile(chatId, pdfUrl, '2026_меню.pdf', 'Біздің мәзір 📄');
+      const pdfUrl = process.env.PUBLIC_MENU_PDF_URL || 'https://nori-crm.vercel.app/menu.pdf';
+      await sendWhatsAppFile(chatId, pdfUrl, '2026_меню.pdf', '2026 Меню');
     }
 
     return res.status(200).json({
