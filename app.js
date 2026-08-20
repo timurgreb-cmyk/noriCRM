@@ -167,46 +167,7 @@ const mockMenu = [
 ];
 
 // Seed initial orders if none exist
-const DEFAULT_ORDERS = [
-  {
-    id: 101,
-    phone: '+77071234567',
-    name: 'Айдос',
-    address: 'ул. Достык 42, кв 15',
-    items: [
-      { id: 1, name: 'Филадельфия Классик', quantity: 2, price: 2490 },
-      { id: 5, name: 'Coca-Cola 0.5', quantity: 2, price: 450 }
-    ],
-    total: 5880,
-    status: 'new',
-    created_at: new Date(Date.now() - 5 * 60 * 1000).toISOString() // 5 mins ago
-  },
-  {
-    id: 102,
-    phone: '+77779876543',
-    name: 'Мария',
-    address: 'пр. Аль-Фараби 77/7, блок А, кв 102',
-    items: [
-      { id: 3, name: 'Дракон Ролл', quantity: 1, price: 2890 },
-      { id: 6, name: 'Соевый соус (доп)', quantity: 2, price: 150 }
-    ],
-    total: 3190,
-    status: 'ready',
-    created_at: new Date(Date.now() - 25 * 60 * 1000).toISOString() // 25 mins ago
-  },
-  {
-    id: 103,
-    phone: '+77014445566',
-    name: 'Тимур',
-    address: 'ул. Абая 150, кв 4',
-    items: [
-      { id: 2, name: 'Калифорния с крабом', quantity: 3, price: 1990 }
-    ],
-    total: 5970,
-    status: 'ready',
-    created_at: new Date(Date.now() - 45 * 60 * 1000).toISOString() // 45 mins ago
-  }
-];
+const DEFAULT_ORDERS = [];
 
 let orders = [];
 
@@ -215,7 +176,7 @@ function loadOrders() {
   if (localData) {
     orders = JSON.parse(localData);
   } else {
-    orders = [...DEFAULT_ORDERS];
+    orders = [];
     saveOrders();
   }
 }
