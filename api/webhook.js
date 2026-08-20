@@ -246,46 +246,26 @@ ${menuFormatted}
 }
 \`\`\``;
 
-    // 4. Convert history to valid alternating Gemini contents format
-    const contents = [];
-    let lastRole = null;
-
-    for (const m of messages) {
-      const gRole = (m.role === 'user' || m.role === 'customer') ? 'user' : 'model';
-      const textContent = m.content || '';
-      if (!textContent.trim()) continue;
-
-      if (gRole === lastRole) {
-        // Merge consecutive messages from same role to satisfy Gemini API requirements
-        contents[contents.length - 1].parts[0].text += `\n${textContent}`;
-      } else {
-        contents.push({
-          role: gRole,
-          parts: [{ text: textContent }]
-        });
-        lastRole = gRole;
-      }
+    // 4. Format conversation history directly into prompt for 100% reliable context memory
+    let conversationTranscript = '';
+    if (messages.length > 0) {
+      conversationTranscript = 'ИСТОРИЯ ПРЕДЫДУЩЕЙ ПЕРЕПИСКИ С ЭТИМ КЛИЕНТОМ:\n' + 
+        messages.map(m => `${(m.role === 'user' || m.role === 'customer') ? 'Клиент' : 'Оператор'}: ${m.content}`).join('\n') + '\n\n';
     }
 
-    // Append current user message
+    const currentPromptText = `${conversationTranscript}НОВОЕ СООБЩЕНИЕ ОТ КЛИЕНТА СЕЙЧАС: "${text}"\n\nТвой ответ (1 короткое предложение, учитывай ВСЮ историю выше, не переспрашивай то, что уже известно):`;
+
+    const contents = [];
     if (mediaPart) {
-      if (lastRole === 'user') {
-        contents[contents.length - 1].parts.push(mediaPart);
-      } else {
-        contents.push({
-          role: 'user',
-          parts: [mediaPart, { text: 'Клиент прислал этот файл/аудио. Распознай чек или расшифруй аудио.' }]
-        });
-      }
+      contents.push({
+        role: 'user',
+        parts: [mediaPart, { text: currentPromptText }]
+      });
     } else {
-      if (lastRole === 'user') {
-        contents[contents.length - 1].parts[0].text += `\n${text}`;
-      } else {
-        contents.push({
-          role: 'user',
-          parts: [{ text: text }]
-        });
-      }
+      contents.push({
+        role: 'user',
+        parts: [{ text: currentPromptText }]
+      });
     }
 
     // 5. Generate content using Gemini API (with robust multi-model fallback)
@@ -300,7 +280,7 @@ ${menuFormatted}
           contents: contents,
           config: {
             systemInstruction: systemInstruction,
-            temperature: 0.7
+            temperature: 0.2
           }
         });
         if (response && response.text) break;
