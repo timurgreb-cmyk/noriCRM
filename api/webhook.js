@@ -243,22 +243,46 @@ ${menuFormatted}
 }
 \`\`\``;
 
-    // 4. Convert history to Gemini contents format
-    const contents = messages.map(m => ({
-      role: m.role === 'user' ? 'user' : 'model',
-      parts: [{ text: m.content }]
-    }));
+    // 4. Convert history to valid alternating Gemini contents format
+    const contents = [];
+    let lastRole = null;
 
+    for (const m of messages) {
+      const gRole = (m.role === 'user' || m.role === 'customer') ? 'user' : 'model';
+      const textContent = m.content || '';
+      if (!textContent.trim()) continue;
+
+      if (gRole === lastRole) {
+        // Merge consecutive messages from same role to satisfy Gemini API requirements
+        contents[contents.length - 1].parts[0].text += `\n${textContent}`;
+      } else {
+        contents.push({
+          role: gRole,
+          parts: [{ text: textContent }]
+        });
+        lastRole = gRole;
+      }
+    }
+
+    // Append current user message
     if (mediaPart) {
-      contents.push({
-        role: 'user',
-        parts: [mediaPart, { text: 'Клиент прислал этот файл/аудио. Если это чек/квитанция Kaspi — распознай сумму и подтверди чек (receipt_verified: true, paid_amount: ...). Если голосовое — расшифруй.' }]
-      });
+      if (lastRole === 'user') {
+        contents[contents.length - 1].parts.push(mediaPart);
+      } else {
+        contents.push({
+          role: 'user',
+          parts: [mediaPart, { text: 'Клиент прислал этот файл/аудио. Распознай чек или расшифруй аудио.' }]
+        });
+      }
     } else {
-      contents.push({
-        role: 'user',
-        parts: [{ text: text }]
-      });
+      if (lastRole === 'user') {
+        contents[contents.length - 1].parts[0].text += `\n${text}`;
+      } else {
+        contents.push({
+          role: 'user',
+          parts: [{ text: text }]
+        });
+      }
     }
 
     // 5. Generate content using Gemini API (with robust multi-model fallback)
