@@ -377,6 +377,7 @@ ${menuFormatted}
 
 
     // 8. Save updated conversation history
+    // 8. Save updated conversation history (Upsert ensuring 100% atomic persistence)
     const updatedMessages = [
       ...messages,
       { role: 'user', content: text },
@@ -385,25 +386,24 @@ ${menuFormatted}
 
     const isHumanNeeded = !!requiresHumanData;
 
-    if (conv) {
-      await supabase
+    try {
+      const { error: upsertErr } = await supabase
         .from('conversations')
-        .update({
-          messages: updatedMessages,
-          requires_human: isHumanNeeded ? true : (conv.requires_human || false),
-          is_human_takeover: isHumanNeeded ? true : (conv.is_human_takeover || false),
-          updated_at: new Date().toISOString()
-        })
-        .eq('phone', phone);
-    } else {
-      await supabase
-        .from('conversations')
-        .insert([{
+        .upsert({
           phone: phone,
           messages: updatedMessages,
-          requires_human: isHumanNeeded,
-          is_human_takeover: isHumanNeeded
-        }]);
+          requires_human: isHumanNeeded ? true : (conv ? conv.requires_human : false),
+          is_human_takeover: isHumanNeeded ? true : (conv ? conv.is_human_takeover : false),
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'phone' });
+
+      if (upsertErr) {
+        console.error('[Supabase] Error upserting conversation:', upsertErr);
+      } else {
+        console.log(`[Supabase] Conversation successfully updated for ${phone}. Total messages: ${updatedMessages.length}`);
+      }
+    } catch (dbErr) {
+      console.error('[Supabase] Fatal DB exception during conversation save:', dbErr);
     }
 
     let shouldSendPdf = false;
