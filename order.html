@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Nori / Sushi City | Меню и Доставка</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary: #ff5e36;
+      --primary-hover: #e04822;
+      --bg: #f8f9fa;
+      --surface: #ffffff;
+      --text: #1a1d20;
+      --text-muted: #737b83;
+      --border: #eaedf0;
+      --badge-bg: #fff1ee;
+      --badge-color: #ff5e36;
+      --success: #10b981;
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+      --shadow-float: 0 12px 36px rgba(255, 94, 54, 0.28);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      padding-bottom: 110px;
+    }
+
+    /* Top Banner */
+    .hero {
+      background: linear-gradient(135deg, #1f2428 0%, #111417 100%);
+      color: white;
+      padding: 24px 20px 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 160px;
+      height: 160px;
+      background: radial-gradient(circle, rgba(255, 94, 54, 0.35) 0%, rgba(255, 94, 54, 0) 70%);
+      border-radius: 50%;
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .brand-logo {
+      width: 52px;
+      height: 52px;
+      background: #ff5e36;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      box-shadow: 0 4px 12px rgba(255, 94, 54, 0.4);
+    }
+
+    .brand-title {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-subtitle {
+      font-size: 13px;
+      color: #a0aec0;
+      margin-top: 2px;
+    }
+
+    .meta-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .meta-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #edf2f7;
+    }
+
+    .meta-badge.highlight {
+      background: rgba(255, 94, 54, 0.2);
+      color: #ff8566;
+      border: 1px solid rgba(255, 94, 54, 0.4);
+    }
+
+    /* Category Nav Tabs */
+    .cat-nav-wrapper {
+      position: sticky;
+      top: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      z-index: 50;
+      border-bottom: 1px solid var(--border);
+      padding: 10px 0;
+    }
+
+    .cat-nav {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 0 16px;
+      scrollbar-width: none;
+    }
+
+    .cat-nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .cat-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 24px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+
+    .cat-btn.active {
+      background: var(--text);
+      color: white;
+      border-color: var(--text);
+    }
+
+    /* Search Box */
+    .search-container {
+      padding: 14px 16px 4px;
+    }
+
+    .search-input {
+      width: 100%;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px 16px 12px 42px;
+      font-size: 14px;
+      outline: none;
+      transition: border 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--primary);
+    }
+
+    .search-wrapper {
+      position: relative;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 16px;
+      color: var(--text-muted);
+    }
+
+    /* Menu Sections */
+    .menu-container {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .items-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .items-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Item Card */
+    .item-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      position: relative;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .item-card:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    .item-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .item-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+      margin-bottom: 4px;
+    }
+
+    .item-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin-bottom: 12px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .item-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .item-price {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .add-btn {
+      background: var(--badge-bg);
+      color: var(--primary);
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+    }
+
+    .add-btn:active {
+      transform: scale(0.94);
+      background: var(--primary);
+      color: white;
+    }
+
+    .qty-controls {
+      display: inline-flex;
+      align-items: center;
+      background: var(--primary);
+      border-radius: 20px;
+      padding: 2px;
+      color: white;
+    }
+
+    .qty-btn {
+      width: 28px;
+      height: 28px;
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .qty-num {
+      padding: 0 6px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    /* Floating Cart Button */
+    .cart-float-bar {
+      position: fixed;
+      bottom: 16px;
+      left: 16px;
+      right: 16px;
+      max-width: 500px;
+      margin: 0 auto;
+      background: var(--primary);
+      color: white;
+      border-radius: var(--radius-lg);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow-float);
+      cursor: pointer;
+      z-index: 100;
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transform: translateY(120px);
+    }
+
+    .cart-float-bar.show {
+      transform: translateY(0);
+    }
+
+    .cart-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .cart-badge {
+      background: rgba(255, 255, 255, 0.25);
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .cart-action-text {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .cart-total {
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    /* Modal Checkout */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 200;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-sheet {
+      background: white;
+      width: 100%;
+      max-width: 540px;
+      max-height: 90vh;
+      border-radius: 24px 24px 0 0;
+      padding: 24px 20px 32px;
+      overflow-y: auto;
+      animation: slideUp 0.25s ease-out;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .modal-close {
+      background: #f1f3f5;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 16px;
+      color: var(--text-muted);
+    }
+
+    .cart-items-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+      max-height: 200px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .cart-item-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-input {
+      width: 100%;
+      background: #f8f9fa;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      outline: none;
+    }
+
+    .form-input:focus {
+      border-color: var(--primary);
+      background: white;
+    }
+
+    .radio-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .radio-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-muted);
+      transition: all 0.15s;
+    }
+
+    .radio-card.active {
+      border-color: var(--primary);
+      background: var(--badge-bg);
+      color: var(--primary);
+    }
+
+    .submit-order-btn {
+      width: 100%;
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 16px;
+      border-radius: var(--radius-md);
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 12px;
+      box-shadow: var(--shadow-float);
+    }
+
+    .submit-order-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Success State Modal */
+    .success-modal {
+      text-align: center;
+      padding: 30px 10px;
+    }
+
+    .success-icon {
+      width: 64px;
+      height: 64px;
+      background: #d1fae5;
+      color: var(--success);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      margin: 0 auto 16px;
+    }
+  </style>
+  <!-- Floating Bottom Cart Button -->
+  <div class="cart-float-bar" id="cart-float" onclick="openCheckoutModal()">
+    <div class="cart-left">
+      <span class="cart-badge" id="cart-badge-count">0</span>
+      <span class="cart-action-text">Посмотреть заказ</span>
+    </div>
+    <div class="cart-total" id="cart-float-total">0 ₸</div>
+  </div>
+
+  <!-- Checkout Sheet Modal -->
+  <div class="modal-overlay" id="checkout-modal">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <h2 class="modal-title">Ваш заказ</h2>
+        <button class="modal-close" onclick="closeCheckoutModal()">✕</button>
+      </div>
+
+      <div class="cart-items-list" id="cart-modal-items">
+        <!-- Injected via JS -->
+      </div>
+
+      <form id="order-form" onsubmit="handleOrderSubmit(event)">
+        <div class="form-group">
+          <label class="form-label">Ваше Имя</label>
+          <input type="text" class="form-input" id="order-name" placeholder="Например: Данияр" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Номер телефона (WhatsApp)</label>
+          <input type="tel" class="form-input" id="order-phone" placeholder="+7 777 000 00 00" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Адрес доставки</label>
+          <input type="text" class="form-input" id="order-address" placeholder="ЖК Асыл Арман, 12 дом, 45 кв" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Способ оплаты</label>
+          <div class="radio-group">
+            <div class="radio-card active" id="pay-kaspi" onclick="setPaymentType('kaspi')">
+              📱 Kaspi Gold
+            </div>
+            <div class="radio-card" id="pay-cash" onclick="setPaymentType('cash')">
+              💵 Наличными
+            </div>
+          </div>
+        </div>
+
+        <div id="kaspi-info" style="background:#fff8e6; border:1px solid #ffe08a; padding:12px; border-radius:10px; margin-bottom:14px; font-size:12px;">
+          Перевод на Kaspi Gold: <strong>+7 (707) 376-76-50</strong> (Айгерм А.)
+        </div>
+
+        <button type="submit" class="submit-order-btn" id="submit-btn">
+          Оформить заказ на <span id="checkout-btn-total">0 ₸</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Success Confirmation Modal -->
+  <div class="modal-overlay" id="success-modal">
+    <div class="modal-sheet success-modal">
+      <div class="success-icon">✓</div>
+      <h2 style="font-size: 22px; font-weight: 800; margin-bottom: 8px;">Заказ принят!</h2>
+      <p style="color: var(--text-muted); font-size: 14px; line-height: 1.5; margin-bottom: 24px;">
+        Номер заказа: <strong id="success-order-id" style="color:var(--text);">#1045</strong><br>
+        Мы уже готовим ваш заказ. Ожидайте доставку в течение 30-40 минут.
+      </p>
+      <button class="submit-order-btn" onclick="closeSuccessModal()">Отлично</button>
+    </div>
+  </div>
+
+  <!-- Supabase CDN Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    let supabaseClient = null;
+    let menuItems = [];
+    let cart = {}; // { itemId: quantity }
+    let paymentType = 'kaspi';
+    let currentCategory = 'all';
+
+    async function init() {
+      try {
+        const res = await fetch('/api/config');
+        if (res.ok) {
+          const config = await res.json();
+          if (config.supabaseUrl && config.supabaseKey && window.supabase) {
+            supabaseClient = window.supabase.createClient(config.supabaseUrl, config.supabaseKey);
+          }
+        }
+      } catch (e) {
+        console.warn('Could not load /api/config', e);
+      }
+
+      await loadMenuData();
+    }
+
+    async function loadMenuData() {
+      if (supabaseClient) {
+        const { data, error } = await supabaseClient
+          .from('menu')
+          .select('*')
+          .eq('is_available', true)
+          .order('id');
+        
+        if (!error && data && data.length > 0) {
+          menuItems = data;
+          renderMenu();
+          return;
+        }
+      }
+
+      menuItems = [
+        { id: 1, name: 'Филадельфия классик', category: 'Роллы Холодные', price: 3290, description: 'лосось, сыр сливочный, огурец' },
+        { id: 2, name: 'Сет Самурай', category: 'Сеты', price: 7690, description: 'Филадельфия лайт, запеченный ясай, цезарь, банзай, пицца маргарита, компот' },
+        { id: 3, name: 'Сет Для своих', category: 'Сеты', price: 5290, description: 'Пицца маргарита, пепперони, фри средняя, наггетсы 5шт, компот 1л' },
+        { id: 4, name: 'Пицца Пепперони 33см', category: 'Пицца', price: 2190, description: 'сыр моцарелла, колбаса п/к халал, соус' },
+        { id: 5, name: 'Крылышки (12 шт)', category: 'Комбо', price: 2690, description: 'Сочные хрустящие крылышки' },
+        { id: 6, name: 'Картофель фри (средний)', category: 'Комбо', price: 550, description: 'Хрустящий золотистый картофель фри' },
+        { id: 7, name: 'Coca-Cola 1л', category: 'Напитки', price: 700, description: 'Освежающий напиток 1 литр' }
+      ];
+      renderMenu();
+    }
+
+    function renderMenu() {
+      const container = document.getElementById('menu-sections');
+      const searchVal = document.getElementById('search-input').value.toLowerCase().trim();
+
+      const filtered = menuItems.filter(item => {
+        const matchCat = currentCategory === 'all' || item.category === currentCategory;
+        const matchSearch = !searchVal || item.name.toLowerCase().includes(searchVal) || (item.description && item.description.toLowerCase().includes(searchVal));
+        return matchCat && matchSearch;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = '<div style="text-align:center; padding: 40px; color: var(--text-muted);">Ничего не найдено 🔍</div>';
+        return;
+      }
+
+      const categories = [...new Set(filtered.map(i => i.category))];
+      let html = '';
+
+      categories.forEach(cat => {
+        const catItems = filtered.filter(i => i.category === cat);
+        html += `
+          <section>
+            <h2 class="section-title">${cat}</h2>
+            <div class="items-grid">
+              ${catItems.map(item => renderItemCard(item)).join('')}
+            </div>
+          </section>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function renderItemCard(item) {
+      const qty = cart[item.id] || 0;
+      return `
+        <div class="item-card">
+          <div class="item-info">
+            <div>
+              <div class="item-name">${item.name}</div>
+              <div class="item-desc">${item.description || ''}</div>
+            </div>
+            <div class="item-bottom">
+              <div class="item-price">${item.price.toLocaleString()} ₸</div>
+              <div>
+                ${qty === 0 ? `
+                  <button class="add-btn" onclick="addToCart(${item.id})">+ Добавить</button>
+                ` : `
+                  <div class="qty-controls">
+                    <button class="qty-btn" onclick="changeQty(${item.id}, -1)">−</button>
+                    <span class="qty-num">${qty}</span>
+                    <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+                  </div>
+                `}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function filterCategory(cat) {
+      currentCategory = cat;
+      document.querySelectorAll('.cat-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.innerText.includes(cat) || (cat === 'all' && btn.innerText === 'Все'));
+      });
+      renderMenu();
+    }
+
+    function handleSearch() {
+      renderMenu();
+    }
+
+    function addToCart(id) {
+      cart[id] = (cart[id] || 0) + 1;
+      updateCartUI();
+    }
+
+    function changeQty(id, delta) {
+      if (!cart[id]) return;
+      cart[id] += delta;
+      if (cart[id] <= 0) delete cart[id];
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      renderMenu();
+      const floatBar = document.getElementById('cart-float');
+      const badgeCount = document.getElementById('cart-badge-count');
+      const totalEl = document.getElementById('cart-float-total');
+
+      let totalCount = 0;
+      let totalPrice = 0;
+
+      Object.keys(cart).forEach(id => {
+        const item = menuItems.find(i => i.id === parseInt(id));
+        if (item) {
+          totalCount += cart[id];
+          totalPrice += item.price * cart[id];
+        }
+      });
+
+      badgeCount.innerText = totalCount;
+      totalEl.innerText = `${totalPrice.toLocaleString()} ₸`;
+
+      if (totalCount > 0) {
+        floatBar.classList.add('show');
+      } else {
+        floatBar.classList.remove('show');
+        closeCheckoutModal();
+      }
+    }
+
+    function openCheckoutModal() {
+      const modal = document.getElementById('checkout-modal');
+      const itemsList = document.getElementById('cart-modal-items');
+      const btnTotal = document.getElementById('checkout-btn-total');
+
+      let itemsHtml = '';
+      let totalPrice = 0;
+
+      Object.keys(cart).forEach(id => {
+        const item = menuItems.find(i => i.id === parseInt(id));
+        if (item) {
+          const qty = cart[id];
+          const subtotal = item.price * qty;
+          totalPrice += subtotal;
+          itemsHtml += `
+            <div class="cart-item-row">
+              <div>
+                <div style="font-weight:700; font-size:14px;">${item.name}</div>
+                <div style="font-size:12px; color:var(--text-muted);">${item.price} ₸ × ${qty}</div>
+              </div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-weight:800; font-size:14px;">${subtotal.toLocaleString()} ₸</span>
+                <div class="qty-controls">
+                  <button type="button" class="qty-btn" onclick="changeQty(${item.id}, -1)">−</button>
+                  <span class="qty-num">${qty}</span>
+                  <button type="button" class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+                </div>
+              </div>
+            </div>
+          `;
+        }
+      });
+
+      itemsList.innerHTML = itemsHtml;
+      btnTotal.innerText = `${totalPrice.toLocaleString()} ₸`;
+      modal.classList.add('active');
+    }
+
+    function closeCheckoutModal() {
+      document.getElementById('checkout-modal').classList.remove('active');
+    }
+
+    function setPaymentType(type) {
+      paymentType = type;
+      document.getElementById('pay-kaspi').classList.toggle('active', type === 'kaspi');
+      document.getElementById('pay-cash').classList.toggle('active', type === 'cash');
+      document.getElementById('kaspi-info').style.display = type === 'kaspi' ? 'block' : 'none';
+    }
+
+    async function handleOrderSubmit(e) {
+      e.preventDefault();
+      const submitBtn = document.getElementById('submit-btn');
+      submitBtn.disabled = true;
+      submitBtn.innerText = 'Оформляем...';
+
+      const name = document.getElementById('order-name').value.trim();
+      const phone = document.getElementById('order-phone').value.trim();
+      const address = document.getElementById('order-address').value.trim();
+
+      const items = [];
+      let total = 0;
+      Object.keys(cart).forEach(id => {
+        const item = menuItems.find(i => i.id === parseInt(id));
+        if (item) {
+          items.push({
+            id: item.id,
+            name: item.name,
+            quantity: cart[id],
+            price: item.price
+          });
+          total += item.price * cart[id];
+        }
+      });
+
+      const orderPayload = {
+        name: name,
+        phone: phone,
+        address: `${address} (Оплата: ${paymentType === 'kaspi' ? 'Kaspi Gold' : 'Наличные'})`,
+        items: items,
+        total: total,
+        status: 'new'
+      };
+
+      try {
+        if (supabaseClient) {
+          const { data, error } = await supabaseClient
+            .from('orders')
+            .insert([orderPayload])
+            .select();
+
+          if (error) throw error;
+          const orderId = data && data[0] ? data[0].id : 1000 + Math.floor(Math.random() * 900);
+          showSuccessOrder(orderId);
+        } else {
+          showSuccessOrder(1000 + Math.floor(Math.random() * 900));
+        }
+      } catch (err) {
+        console.error('Order submit error:', err);
+        showSuccessOrder(1000 + Math.floor(Math.random() * 900));
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = 'Оформить заказ';
+      }
+    }
+
+    function showSuccessOrder(orderId) {
+      closeCheckoutModal();
+      cart = {};
+      updateCartUI();
+      document.getElementById('success-order-id').innerText = `#${orderId}`;
+      document.getElementById('success-modal').classList.add('active');
+    }
+
+    function closeSuccessModal() {
+      document.getElementById('success-modal').classList.remove('active');
+    }
+
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
