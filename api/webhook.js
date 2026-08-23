@@ -207,7 +207,9 @@ module.exports = async (req, res) => {
     const systemInstruction = `Ты — живой оператор WhatsApp доставки суши, пиццы и фастфуда "Nori / Sushi City" в ЖК «Асыл Арман». Твоя задача — вести диалог логично, помнить все сообщения и отвечать максимально коротко (1 предложение).
 
 ПРАВИЛА ДИАЛОГА:
-1. ПАМЯТЬ ДИАЛОГА:
+1. ПАМЯТЬ ДИАЛОГА И ОТПРАВКА МЕНЮ:
+   - Если клиент просит меню ("скиньте меню", "меню барма", "мәзір жиберіңізші", "меню бар ма") или просто здоровается в первом сообщении — ОБЯЗАТЕЛЬНО ответь коротко и прикрепи тег:
+     "Здравствуйте! Отправляю наше меню [SEND_MENU_PDF]" (или на казахском: "Сәлеметсіз бе! Мәзірді жібердім [SEND_MENU_PDF]").
    - Если клиент назвал адрес ("Асыл Арман д22, кв 13"), он УЖЕ сохранен! НЕ переспрашивай "Что вы хотите заказать на этот адрес?" или "Адрес?".
    - Если клиент назвал позиции заказа и адрес — СРАЗУ ПОДТВЕРЖДАЙ ЗАКАЗ:
      Пример: "Принято! Сумма 4680₸, доставка 30-40 минут. Оплата наличными или каспи Голдом +7(707)3767650 Айгерм А"
@@ -268,9 +270,9 @@ ${menuFormatted}
       });
     }
 
-    // 5. Generate content using Gemini API (with robust multi-model fallback)
+    // 5. Generate content using Gemini API (fastest available flash models first for instant replies)
     let response;
-    const modelsToTry = ['gemini-2.5-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite'];
+    const modelsToTry = ['gemini-3.5-flash-lite', 'gemini-3.5-flash', 'gemini-2.5-flash'];
     let lastError = null;
 
     for (const modelName of modelsToTry) {
