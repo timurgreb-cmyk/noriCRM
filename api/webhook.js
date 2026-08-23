@@ -156,12 +156,6 @@ module.exports = async (req, res) => {
       .eq('phone', phone)
       .maybeSingle();
 
-    // Check if human takeover is active
-    if (conv && conv.is_human_takeover) {
-      console.log(`Human takeover active for ${phone}. Bot remains silent.`);
-      return res.status(200).json({ status: 'human_takeover_active' });
-    }
-
     let messages = conv ? (conv.messages || []) : [];
 
     // Check for explicit trigger words for human operator
