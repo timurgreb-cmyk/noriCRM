@@ -253,9 +253,9 @@ ${menuFormatted}
       });
     }
 
-    // 5. Generate content using Gemini API (gemini-2.5-flash for intelligent memory and accurate pricing)
+    // 5. Generate content using Gemini API
     let response;
-    const modelsToTry = ['gemini-2.5-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite'];
+    const modelsToTry = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-2.5-pro', 'gemini-1.5-flash'];
     let lastError = null;
 
     for (const modelName of modelsToTry) {

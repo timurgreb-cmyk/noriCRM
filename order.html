@@ -24,7 +24,7 @@
       --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
       --shadow-float: 0 12px 36px rgba(255, 94, 54, 0.28);
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Plus Jakarta Sans", sans-serif; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Plus Jakarta Sans", -apple-system, sans-serif; }
     body { background-color: var(--bg); color: var(--text); padding-bottom: 110px; }
     .hero { background: linear-gradient(135deg, #1f2428 0%, #111417 100%); color: white; padding: 24px 20px; }
     .brand-row { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
@@ -40,19 +40,22 @@
     .cat-btn.active { background: var(--text); color: white; border-color: var(--text); }
     .search-container { padding: 14px 16px 4px; }
     .search-input { width: 100%; background: white; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px 16px; font-size: 14px; outline: none; }
-    .menu-container { padding: 16px; display: flex; flex-direction: column; gap: 24px; }
+    .menu-container { padding: 16px; display: flex; flex-direction: column; gap: 28px; }
     .section-title { font-size: 18px; font-weight: 800; margin-bottom: 12px; }
-    .items-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
-    .item-card { background: var(--surface); border-radius: var(--radius-lg); padding: 16px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); display: flex; justify-content: space-between; gap: 12px; }
-    .item-info { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
-    .item-name { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
-    .item-desc { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; line-height: 1.3; }
-    .item-bottom { display: flex; align-items: center; justify-content: space-between; }
-    .item-price { font-size: 16px; font-weight: 800; }
+    .items-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+    .item-card { background: var(--surface); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid var(--border); display: flex; flex-direction: column; }
+    .item-img-wrap { width: 100%; height: 160px; background: #eee; position: relative; overflow: hidden; }
+    .item-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
+    .item-card:hover .item-img { transform: scale(1.04); }
+    .item-body { padding: 14px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    .item-name { font-size: 16px; font-weight: 800; margin-bottom: 4px; }
+    .item-desc { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.4; }
+    .item-bottom { display: flex; align-items: center; justify-content: space-between; margin-top: auto; }
+    .item-price { font-size: 17px; font-weight: 800; color: var(--text); }
     .add-btn { background: var(--badge-bg); color: var(--primary); border: none; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 700; cursor: pointer; }
     .qty-controls { display: inline-flex; align-items: center; background: var(--primary); border-radius: 20px; padding: 2px; color: white; }
     .qty-btn { width: 28px; height: 28px; background: transparent; border: none; color: white; font-size: 16px; font-weight: 700; cursor: pointer; }
-    .qty-num { padding: 0 6px; font-size: 13px; font-weight: 700; }
+    .qty-num { padding: 0 8px; font-size: 13px; font-weight: 700; }
     .cart-float-bar { position: fixed; bottom: 16px; left: 16px; right: 16px; max-width: 500px; margin: 0 auto; background: var(--primary); color: white; border-radius: var(--radius-lg); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: var(--shadow-float); cursor: pointer; z-index: 100; transform: translateY(120px); transition: transform 0.2s; }
     .cart-float-bar.show { transform: translateY(0); }
     .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); z-index: 200; display: none; align-items: flex-end; justify-content: center; }
@@ -88,28 +91,31 @@
 
   <div class="cat-nav-wrapper">
     <div class="cat-nav" id="cat-nav-container">
-      <button class="cat-btn active" onclick="filterCategory('all')">Все</button>
+      <button class="cat-btn active" onclick="filterCategory('all')">Все (145)</button>
       <button class="cat-btn" onclick="filterCategory('Сеты')">🍱 Сеты</button>
       <button class="cat-btn" onclick="filterCategory('Роллы Холодные')">🍣 Холодные роллы</button>
       <button class="cat-btn" onclick="filterCategory('Роллы Запеченные')">🔥 Запеченные</button>
       <button class="cat-btn" onclick="filterCategory('Роллы Темпура')">🍤 Темпура</button>
+      <button class="cat-btn" onclick="filterCategory('Маки')">🍙 Маки & Суши</button>
       <button class="cat-btn" onclick="filterCategory('Пицца')">🍕 Пицца 33см</button>
-      <button class="cat-btn" onclick="filterCategory('Комбо')">🍔 Фастфуд & Комбо</button>
+      <button class="cat-btn" onclick="filterCategory('Фастфуд')">🍔 Бургеры</button>
+      <button class="cat-btn" onclick="filterCategory('Горячее')">🍜 WOK & Рамен</button>
+      <button class="cat-btn" onclick="filterCategory('Крылышки')">🍗 Крылышки</button>
+      <button class="cat-btn" onclick="filterCategory('Закуски')">🍟 Закуски & Фри</button>
       <button class="cat-btn" onclick="filterCategory('Напитки')">🥤 Напитки</button>
+      <button class="cat-btn" onclick="filterCategory('Соусы')">🥢 Соусы</button>
     </div>
   </div>
 
   <div class="search-container">
-    <input type="text" class="search-input" id="search-input" placeholder="Поиск блюд..." oninput="handleSearch()">
+    <input type="text" class="search-input" id="search-input" placeholder="Поиск блюд и ингредиентов (например: лосось, пепперони, сыр)..." oninput="handleSearch()">
   </div>
 
-  <main class="menu-container" id="menu-sections">
-    <div style="text-align:center; padding: 40px; color: var(--text-muted);">Загрузка меню... 🍣</div>
-  </main>
+  <main class="menu-container" id="menu-sections"></main>
 
   <div class="cart-float-bar" id="cart-float" onclick="openCheckoutModal()">
-    <div><span style="background:rgba(255,255,255,0.2); padding:4px 8px; border-radius:10px; font-weight:800;" id="cart-badge-count">0</span> Посмотреть заказ</div>
-    <div style="font-weight:800;" id="cart-float-total">0 ₸</div>
+    <div><span style="background:rgba(255,255,255,0.25); padding:4px 10px; border-radius:12px; font-weight:800;" id="cart-badge-count">0</span> Посмотреть заказ</div>
+    <div style="font-weight:800; font-size:16px;" id="cart-float-total">0 ₸</div>
   </div>
 
   <div class="modal-overlay" id="checkout-modal">
@@ -125,7 +131,7 @@
           <input type="text" class="form-input" id="order-name" placeholder="Данияр" required>
         </div>
         <div class="form-group">
-          <label class="form-label">Телефон WhatsApp</label>
+          <label class="form-label">Телефон (WhatsApp)</label>
           <input type="tel" class="form-input" id="order-phone" placeholder="+7 707 000 00 00" required>
         </div>
         <div class="form-group">
@@ -146,7 +152,7 @@
 
   <div class="modal-overlay" id="success-modal">
     <div class="modal-sheet" style="text-align:center; padding:30px 10px;">
-      <div style="width:50px; height:50px; background:#d1fae5; color:#10b981; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:24px; margin:0 auto 12px;">✓</div>
+      <div style="width:56px; height:56px; background:#d1fae5; color:#10b981; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:26px; margin:0 auto 12px;">✓</div>
       <h2 style="font-size:20px; font-weight:800; margin-bottom:6px;">Заказ принят!</h2>
       <p style="color:var(--text-muted); font-size:13px; margin-bottom:16px;">Номер заказа: <strong id="success-order-id">#1001</strong><br>Ожидайте доставку в течение 30-40 минут.</p>
       <button class="submit-order-btn" onclick="closeSuccessModal()">Отлично</button>
@@ -155,7 +161,1170 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    let supabaseClient = null, menuItems = [], cart = {}, paymentType = 'kaspi', currentCategory = 'all';
+    const menuItems = [
+  {
+    "id": 1,
+    "name": "Филадельфия классик",
+    "category": "Роллы Холодные",
+    "price": 3290,
+    "description": "лосось, сыр сливочный, огурец",
+    "img": "/public/img/dish_1.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Филадельфия лайт",
+    "category": "Роллы Холодные",
+    "price": 2290,
+    "description": "лосось, сыр сливочный, огурец",
+    "img": "/public/img/dish_2.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Филадельфия эконом",
+    "category": "Роллы Холодные",
+    "price": 1950,
+    "description": "лосось, сыр сливочный, огурец",
+    "img": "/public/img/dish_3.jpg"
+  },
+  {
+    "id": 4,
+    "name": "Филадельфия люкс",
+    "category": "Роллы Холодные",
+    "price": 3990,
+    "description": "лосось, сыр сливочный, икра",
+    "img": "/public/img/dish_4.jpg"
+  },
+  {
+    "id": 5,
+    "name": "Филадельфия гриль",
+    "category": "Роллы Холодные",
+    "price": 2390,
+    "description": "лосось, салатный лист, сыр, унаги соус",
+    "img": "/public/img/dish_5.jpg"
+  },
+  {
+    "id": 6,
+    "name": "Филадельфия с угрем",
+    "category": "Роллы Холодные",
+    "price": 2590,
+    "description": "лосось, угорь, огурец, сыр сливочный",
+    "img": "/public/img/dish_6.jpg"
+  },
+  {
+    "id": 7,
+    "name": "Канада",
+    "category": "Роллы Холодные",
+    "price": 2290,
+    "description": "угорь, сыр, унаги соус, кунжут, такуан",
+    "img": "/public/img/dish_7.jpg"
+  },
+  {
+    "id": 8,
+    "name": "Техас",
+    "category": "Роллы Холодные",
+    "price": 2090,
+    "description": "жареный лосось в соусе тереяки, снежный краб, икра, тобико",
+    "img": "/public/img/dish_8.jpg"
+  },
+  {
+    "id": 9,
+    "name": "Аляска",
+    "category": "Роллы Холодные",
+    "price": 1890,
+    "description": "жареный лосось в соусе тереяки, огурец, кунжут",
+    "img": "/public/img/dish_9.jpg"
+  },
+  {
+    "id": 10,
+    "name": "Кунжутик ролл",
+    "category": "Роллы Холодные",
+    "price": 1290,
+    "description": "кунжут, сыр сливочный, огурец",
+    "img": "/public/img/dish_10.jpg"
+  },
+  {
+    "id": 11,
+    "name": "Бонито",
+    "category": "Роллы Холодные",
+    "price": 1950,
+    "description": "жареный лосось, огурец, сливочный сыр, спайс соус, стружка тунца",
+    "img": "/public/img/dish_11.jpg"
+  },
+  {
+    "id": 12,
+    "name": "Дракон",
+    "category": "Роллы Холодные",
+    "price": 2590,
+    "description": "краб микс, копчёный угорь, огурец, унаги соус, кунжут",
+    "img": "/public/img/dish_12.jpg"
+  },
+  {
+    "id": 13,
+    "name": "Дуэт ролл",
+    "category": "Роллы Холодные",
+    "price": 2590,
+    "description": "угорь, лосось, сыр филадельфия, огурец",
+    "img": "/public/img/dish_13.jpg"
+  },
+  {
+    "id": 14,
+    "name": "Кани ролл",
+    "category": "Роллы Холодные",
+    "price": 1690,
+    "description": "краб в темпуре, огурец, сыр сливочный",
+    "img": "/public/img/dish_14.jpg"
+  },
+  {
+    "id": 15,
+    "name": "Чиз ролл",
+    "category": "Роллы Холодные",
+    "price": 1690,
+    "description": "сыр чеддер, слив. сыр, куриное филе, огурец, помидор",
+    "img": "/public/img/dish_15.jpg"
+  },
+  {
+    "id": 16,
+    "name": "Мистер Крабс",
+    "category": "Роллы Холодные",
+    "price": 1890,
+    "description": "краб в темпуре, сыр сливочный, спайс соус",
+    "img": "/public/img/dish_16.jpg"
+  },
+  {
+    "id": 17,
+    "name": "Гейша",
+    "category": "Роллы Холодные",
+    "price": 1890,
+    "description": "лосось, сыр сливочный, огурец",
+    "img": "/public/img/dish_17.jpg"
+  },
+  {
+    "id": 18,
+    "name": "Хокайдо",
+    "category": "Роллы Холодные",
+    "price": 2190,
+    "description": "сыр сливочный, огурец, лосось, кунжут",
+    "img": "/public/img/dish_18.jpg"
+  },
+  {
+    "id": 19,
+    "name": "Фитнес ролл",
+    "category": "Роллы Холодные",
+    "price": 1590,
+    "description": "овощи, сыр сливочный",
+    "img": "/public/img/dish_19.jpg"
+  },
+  {
+    "id": 20,
+    "name": "Тортилья с курицей",
+    "category": "Роллы Холодные",
+    "price": 1690,
+    "description": "лепешка тортилья, куриное филе, сыр, помидор",
+    "img": "/public/img/dish_20.jpg"
+  },
+  {
+    "id": 21,
+    "name": "Инь-Янь",
+    "category": "Роллы Холодные",
+    "price": 2290,
+    "description": "лосось, угорь, кунжут, унаги соус",
+    "img": "/public/img/dish_21.jpg"
+  },
+  {
+    "id": 22,
+    "name": "Калифорния маки (с сыром)",
+    "category": "Роллы Холодные",
+    "price": 1390,
+    "description": "сыр, огурец, тобико",
+    "img": "/public/img/dish_22.jpg"
+  },
+  {
+    "id": 23,
+    "name": "Калифорния маки (с крабом)",
+    "category": "Роллы Холодные",
+    "price": 1790,
+    "description": "краб, огурец, тобико",
+    "img": "/public/img/dish_23.jpg"
+  },
+  {
+    "id": 24,
+    "name": "Калифорния маки (с креветкой)",
+    "category": "Роллы Холодные",
+    "price": 1990,
+    "description": "креветка, огурец, тобико",
+    "img": "/public/img/dish_24.jpg"
+  },
+  {
+    "id": 25,
+    "name": "Калифорния маки (с лососем)",
+    "category": "Роллы Холодные",
+    "price": 2090,
+    "description": "лосось, огурец, тобико",
+    "img": "/public/img/dish_25.jpg"
+  },
+  {
+    "id": 26,
+    "name": "Киноки",
+    "category": "Роллы Запеченные",
+    "price": 2090,
+    "description": "лосось, огурец, сыр, унаги соус, спайс соус",
+    "img": "/public/img/dish_26.jpg"
+  },
+  {
+    "id": 27,
+    "name": "Тори хот",
+    "category": "Роллы Запеченные",
+    "price": 1990,
+    "description": "цыпленок, сыр, огурец, помидор, унаги соус",
+    "img": "/public/img/dish_27.jpg"
+  },
+  {
+    "id": 28,
+    "name": "Мураками",
+    "category": "Роллы Запеченные",
+    "price": 2290,
+    "description": "лосось, снеж. краб, икра тобико, сыр",
+    "img": "/public/img/dish_28.jpg"
+  },
+  {
+    "id": 29,
+    "name": "Эбияма",
+    "category": "Роллы Запеченные",
+    "price": 2190,
+    "description": "креветка, сыр, огурец, тобико, унаги соус",
+    "img": "/public/img/dish_29.jpg"
+  },
+  {
+    "id": 30,
+    "name": "Вулкан",
+    "category": "Роллы Запеченные",
+    "price": 2590,
+    "description": "лосось, угорь, сыр, огурец, спайс соус",
+    "img": "/public/img/dish_30.jpg"
+  },
+  {
+    "id": 31,
+    "name": "Санрайз",
+    "category": "Роллы Запеченные",
+    "price": 2090,
+    "description": "сыр, угорь, огурец, унаги соус",
+    "img": "/public/img/dish_31.jpg"
+  },
+  {
+    "id": 32,
+    "name": "Ясай запеченный",
+    "category": "Роллы Запеченные",
+    "price": 1890,
+    "description": "огурец, помидор, сыр, спайс соус",
+    "img": "/public/img/dish_32.jpg"
+  },
+  {
+    "id": 33,
+    "name": "Запеченный с крабом",
+    "category": "Роллы Запеченные",
+    "price": 1890,
+    "description": "снеж. краб, сыр, огурец, унаги соус",
+    "img": "/public/img/dish_33.jpg"
+  },
+  {
+    "id": 34,
+    "name": "Цезарь запеченный",
+    "category": "Роллы Запеченные",
+    "price": 2190,
+    "description": "сливочный сыр, цыпленок, огурец, помидор",
+    "img": "/public/img/dish_34.jpg"
+  },
+  {
+    "id": 35,
+    "name": "Филадельфия запеченная",
+    "category": "Роллы Запеченные",
+    "price": 2590,
+    "description": "лосось, сыр, огурец, спайс соус",
+    "img": "/public/img/dish_35.jpg"
+  },
+  {
+    "id": 36,
+    "name": "Запеченный с мидиями",
+    "category": "Роллы Запеченные",
+    "price": 1990,
+    "description": "мидии, сыр, огурец, унаги соус",
+    "img": "/public/img/dish_36.jpg"
+  },
+  {
+    "id": 37,
+    "name": "Темпура лосось",
+    "category": "Роллы Темпура",
+    "price": 1950,
+    "description": "лосось, сыр, унаги соус, огурец",
+    "img": "/public/img/dish_37.jpg"
+  },
+  {
+    "id": 38,
+    "name": "Унаги темпура",
+    "category": "Роллы Темпура",
+    "price": 1990,
+    "description": "угорь, сыр, унаги соус, огурец",
+    "img": "/public/img/dish_38.jpg"
+  },
+  {
+    "id": 39,
+    "name": "Эби темпура",
+    "category": "Роллы Темпура",
+    "price": 1990,
+    "description": "креветка, сыр, унаги соус, чесночный соус",
+    "img": "/public/img/dish_39.jpg"
+  },
+  {
+    "id": 40,
+    "name": "Ясай темпура",
+    "category": "Роллы Темпура",
+    "price": 1790,
+    "description": "огурец, помидор, паприка, сыр",
+    "img": "/public/img/dish_40.jpg"
+  },
+  {
+    "id": 41,
+    "name": "Жареные с сыром",
+    "category": "Роллы Темпура",
+    "price": 1590,
+    "description": "сыр, унаги соус, кунжут",
+    "img": "/public/img/dish_41.jpg"
+  },
+  {
+    "id": 42,
+    "name": "Американо",
+    "category": "Роллы Темпура",
+    "price": 2090,
+    "description": "лосось, сыр, угорь, унаги соус",
+    "img": "/public/img/dish_42.jpg"
+  },
+  {
+    "id": 43,
+    "name": "Банзай",
+    "category": "Роллы Темпура",
+    "price": 1690,
+    "description": "снежный краб, сыр, огурец",
+    "img": "/public/img/dish_43.jpg"
+  },
+  {
+    "id": 44,
+    "name": "Цезарь темпура",
+    "category": "Роллы Темпура",
+    "price": 1890,
+    "description": "сливочный сыр, цыпленок, помидор",
+    "img": "/public/img/dish_44.jpg"
+  },
+  {
+    "id": 45,
+    "name": "Каппа маки",
+    "category": "Маки",
+    "price": 950,
+    "description": "огурец, кунжут",
+    "img": "/public/img/dish_45.jpg"
+  },
+  {
+    "id": 46,
+    "name": "Саке маки",
+    "category": "Маки",
+    "price": 1300,
+    "description": "лосось",
+    "img": "/public/img/dish_46.jpg"
+  },
+  {
+    "id": 47,
+    "name": "Ролл с крабом",
+    "category": "Маки",
+    "price": 1300,
+    "description": "снежный краб",
+    "img": "/public/img/dish_47.jpg"
+  },
+  {
+    "id": 48,
+    "name": "Унаги маки",
+    "category": "Маки",
+    "price": 1300,
+    "description": "угорь, кунжут",
+    "img": "/public/img/dish_48.jpg"
+  },
+  {
+    "id": 49,
+    "name": "Суши С лососем",
+    "category": "Суши",
+    "price": 1300,
+    "description": "лосось (2 шт)",
+    "img": "/public/img/dish_49.jpg"
+  },
+  {
+    "id": 50,
+    "name": "Суши С угрем",
+    "category": "Суши",
+    "price": 1300,
+    "description": "угорь (2 шт)",
+    "img": "/public/img/dish_50.jpg"
+  },
+  {
+    "id": 51,
+    "name": "Суши С креветкой",
+    "category": "Суши",
+    "price": 1300,
+    "description": "креветка (2 шт)",
+    "img": "/public/img/dish_51.jpg"
+  },
+  {
+    "id": 52,
+    "name": "Пицца Маргарита классическая 33см",
+    "category": "Пицца",
+    "price": 1690,
+    "description": "сыр моцарелла, фирменный соус",
+    "img": "/public/img/dish_52.jpg"
+  },
+  {
+    "id": 53,
+    "name": "Пицца Маргарита с помидорами 33см",
+    "category": "Пицца",
+    "price": 1890,
+    "description": "сыр моцарелла, томаты, соус",
+    "img": "/public/img/dish_53.jpg"
+  },
+  {
+    "id": 54,
+    "name": "Пицца Пепперони 33см",
+    "category": "Пицца",
+    "price": 2190,
+    "description": "сыр моцарелла, колбаса п/к халал",
+    "img": "/public/img/dish_54.jpg"
+  },
+  {
+    "id": 55,
+    "name": "Пицца Грибная 33см",
+    "category": "Пицца",
+    "price": 1950,
+    "description": "грибы шампиньоны, сыр моцарелла",
+    "img": "/public/img/dish_55.jpg"
+  },
+  {
+    "id": 56,
+    "name": "Пицца Ветчина и грибы 33см",
+    "category": "Пицца",
+    "price": 2190,
+    "description": "ветчина говяжья, грибы шампиньоны",
+    "img": "/public/img/dish_56.jpg"
+  },
+  {
+    "id": 57,
+    "name": "Пицца Сырный цыпленок 33см",
+    "category": "Пицца",
+    "price": 2390,
+    "description": "цыпленок, томаты, сыр моцарелла",
+    "img": "/public/img/dish_57.jpg"
+  },
+  {
+    "id": 58,
+    "name": "Пицца Гавайская 33см",
+    "category": "Пицца",
+    "price": 2290,
+    "description": "куриное филе, ананас, моцарелла",
+    "img": "/public/img/dish_58.jpg"
+  },
+  {
+    "id": 59,
+    "name": "Пицца Неаполь (острая) 33см",
+    "category": "Пицца",
+    "price": 2290,
+    "description": "куриное филе, халапеньо, томаты",
+    "img": "/public/img/dish_59.jpg"
+  },
+  {
+    "id": 60,
+    "name": "Пицца Франческо 33см",
+    "category": "Пицца",
+    "price": 2290,
+    "description": "куриное филе, грибы шампиньоны",
+    "img": "/public/img/dish_60.jpg"
+  },
+  {
+    "id": 61,
+    "name": "Пицца Болоньезе 33см",
+    "category": "Пицца",
+    "price": 2290,
+    "description": "говяжий фарш, томаты, моцарелла",
+    "img": "/public/img/dish_61.jpg"
+  },
+  {
+    "id": 62,
+    "name": "Пицца 4 сезона 33см",
+    "category": "Пицца",
+    "price": 2290,
+    "description": "куриное филе, грибы, ветчина, колбаса",
+    "img": "/public/img/dish_62.jpg"
+  },
+  {
+    "id": 63,
+    "name": "Пицца Вегетарианская 33см",
+    "category": "Пицца",
+    "price": 2290,
+    "description": "оливки, томаты, перец, грибы",
+    "img": "/public/img/dish_63.jpg"
+  },
+  {
+    "id": 64,
+    "name": "Пицца Челентано 33см",
+    "category": "Пицца",
+    "price": 1890,
+    "description": "колбаса п/к, корнишоны",
+    "img": "/public/img/dish_64.jpg"
+  },
+  {
+    "id": 65,
+    "name": "Пицца 4 сыра 33см",
+    "category": "Пицца",
+    "price": 2190,
+    "description": "сыр моцарелла, блю-чиз, чеддер, пармезан",
+    "img": "/public/img/dish_65.jpg"
+  },
+  {
+    "id": 66,
+    "name": "Пицца Цезарь 33см",
+    "category": "Пицца",
+    "price": 2490,
+    "description": "куриное филе, салат айсберг, соус цезарь, пармезан",
+    "img": "/public/img/dish_66.jpg"
+  },
+  {
+    "id": 67,
+    "name": "Пицца Америка 33см",
+    "category": "Пицца",
+    "price": 2490,
+    "description": "говяжье филе, перец, грибы",
+    "img": "/public/img/dish_67.jpg"
+  },
+  {
+    "id": 68,
+    "name": "Пицца BBQ 33см",
+    "category": "Пицца",
+    "price": 2350,
+    "description": "охотничьи сосиски, лук, соус BBQ",
+    "img": "/public/img/dish_68.jpg"
+  },
+  {
+    "id": 69,
+    "name": "Пицца Мексика (острая) 33см",
+    "category": "Пицца",
+    "price": 2390,
+    "description": "куриное филе, халапеньо, перец",
+    "img": "/public/img/dish_69.jpg"
+  },
+  {
+    "id": 70,
+    "name": "Пицца С семгой 33см",
+    "category": "Пицца",
+    "price": 2590,
+    "description": "семга, моцарелла, соус",
+    "img": "/public/img/dish_70.jpg"
+  },
+  {
+    "id": 71,
+    "name": "Пицца Охотничья 33см",
+    "category": "Пицца",
+    "price": 2290,
+    "description": "говяжьи сосиски, маслины, томаты",
+    "img": "/public/img/dish_71.jpg"
+  },
+  {
+    "id": 72,
+    "name": "Сет Фудзи (20шт)",
+    "category": "Сеты",
+    "price": 2590,
+    "description": "цезарь, сяке маки, каппа маки",
+    "img": "/public/img/dish_72.jpg"
+  },
+  {
+    "id": 73,
+    "name": "Сет Запеченный (20шт)",
+    "category": "Сеты",
+    "price": 3490,
+    "description": "тори хот, запеченный краб, киноки",
+    "img": "/public/img/dish_73.jpg"
+  },
+  {
+    "id": 74,
+    "name": "Сет Жареный (20шт)",
+    "category": "Сеты",
+    "price": 3490,
+    "description": "цезарь темпура, темпура лосось, калифорния темпура",
+    "img": "/public/img/dish_74.jpg"
+  },
+  {
+    "id": 75,
+    "name": "Сет Популярный (20шт)",
+    "category": "Сеты",
+    "price": 3790,
+    "description": "филадельфия лайт, гейша, эби темпура, цезарь ролл",
+    "img": "/public/img/dish_75.jpg"
+  },
+  {
+    "id": 76,
+    "name": "Сет Сегун (20шт)",
+    "category": "Сеты",
+    "price": 3790,
+    "description": "филадельфия лайт, аляска, ясай темпура, запеченный с мидиями",
+    "img": "/public/img/dish_76.jpg"
+  },
+  {
+    "id": 77,
+    "name": "Сет Вкусняшка (30шт)",
+    "category": "Сеты",
+    "price": 3890,
+    "description": "цезарь, ясай запеченный, каппа маки, сяке маки",
+    "img": "/public/img/dish_77.jpg"
+  },
+  {
+    "id": 78,
+    "name": "Сет Любимый",
+    "category": "Сеты",
+    "price": 4790,
+    "description": "роллы цезарь, пицца пепперони, наггетсы, фри",
+    "img": "/public/img/dish_78.jpg"
+  },
+  {
+    "id": 79,
+    "name": "Сет Великолепный",
+    "category": "Сеты",
+    "price": 4990,
+    "description": "роллы американо, пицца пепперони, наггетсы, компот",
+    "img": "/public/img/dish_79.jpg"
+  },
+  {
+    "id": 80,
+    "name": "Сет Невада (30шт)",
+    "category": "Сеты",
+    "price": 4690,
+    "description": "филадельфия эконом, кунжутик, тори хот",
+    "img": "/public/img/dish_80.jpg"
+  },
+  {
+    "id": 81,
+    "name": "Сет Топовый",
+    "category": "Сеты",
+    "price": 4690,
+    "description": "цезарь запеченный, маргарита с помидорами, фри, крылья",
+    "img": "/public/img/dish_81.jpg"
+  },
+  {
+    "id": 82,
+    "name": "Сет Для своих",
+    "category": "Сеты",
+    "price": 5290,
+    "description": "пицца маргарита, пепперони, фри, наггетсы",
+    "img": "/public/img/dish_82.jpg"
+  },
+  {
+    "id": 83,
+    "name": "Сет Темпура ассорти (30шт)",
+    "category": "Сеты",
+    "price": 4890,
+    "description": "темпура лосось, темпура эби, цезарь темпура",
+    "img": "/public/img/dish_83.jpg"
+  },
+  {
+    "id": 84,
+    "name": "Сет Каприз (20шт + пицца)",
+    "category": "Сеты",
+    "price": 5590,
+    "description": "филадельфия лайт, гейша, ясай запеченный, цезарь ролл, пицца маргарита",
+    "img": "/public/img/dish_84.jpg"
+  },
+  {
+    "id": 85,
+    "name": "Сет На двоих (20шт + пицца)",
+    "category": "Сеты",
+    "price": 4990,
+    "description": "цезарь, калифорния, пицца пепперони, фри",
+    "img": "/public/img/dish_85.jpg"
+  },
+  {
+    "id": 86,
+    "name": "Сет Трио (3 пиццы)",
+    "category": "Сеты",
+    "price": 5790,
+    "description": "пицца маргарита, пепперони, франческо",
+    "img": "/public/img/dish_86.jpg"
+  },
+  {
+    "id": 87,
+    "name": "Сет Аппетитный",
+    "category": "Сеты",
+    "price": 5890,
+    "description": "пицца пепперони, фри, наггетсы, крылья 12шт",
+    "img": "/public/img/dish_87.jpg"
+  },
+  {
+    "id": 88,
+    "name": "Сет Хэппи",
+    "category": "Сеты",
+    "price": 5490,
+    "description": "роллы цезарь, пицца пепперони, крылышки 8шт, фри",
+    "img": "/public/img/dish_88.jpg"
+  },
+  {
+    "id": 89,
+    "name": "Сет Микс (30шт + пицца)",
+    "category": "Сеты",
+    "price": 6490,
+    "description": "филадельфия лайт, цезарь, каппа маки, пицца пепперони",
+    "img": "/public/img/dish_89.jpg"
+  },
+  {
+    "id": 90,
+    "name": "Сет Вкусный (20шт + пицца)",
+    "category": "Сеты",
+    "price": 7090,
+    "description": "филадельфия лайт, ясай темпура, пицца пепперони, сырные палочки",
+    "img": "/public/img/dish_90.jpg"
+  },
+  {
+    "id": 91,
+    "name": "Сет Лучший (20шт + пицца)",
+    "category": "Сеты",
+    "price": 7090,
+    "description": "филадельфия лайт, темпура лосось, пицца 4 сезона, фри",
+    "img": "/public/img/dish_91.jpg"
+  },
+  {
+    "id": 92,
+    "name": "Сет Хайповый",
+    "category": "Сеты",
+    "price": 6590,
+    "description": "цезарь, банзай, пицца маргарита, крылышки, фри",
+    "img": "/public/img/dish_92.jpg"
+  },
+  {
+    "id": 93,
+    "name": "Сет Половинки",
+    "category": "Сеты",
+    "price": 6890,
+    "description": "филадельфия 5шт, цезарь 5шт, ясай запеченный 5шт, техас 5шт, пицца маргарита + пепперони",
+    "img": "/public/img/dish_93.jpg"
+  },
+  {
+    "id": 94,
+    "name": "Сет Дабл (20шт + 2 пиццы)",
+    "category": "Сеты",
+    "price": 7090,
+    "description": "филадельфия лайт, цезарь, пицца маргарита, пепперони",
+    "img": "/public/img/dish_94.jpg"
+  },
+  {
+    "id": 95,
+    "name": "Сет Много вкуса",
+    "category": "Сеты",
+    "price": 7090,
+    "description": "крылья в кисло-сладком 8шт, темпура лосось, цезарь запеченный, пепперони, фри",
+    "img": "/public/img/dish_95.jpg"
+  },
+  {
+    "id": 96,
+    "name": "Сет Самурай",
+    "category": "Сеты",
+    "price": 7690,
+    "description": "филадельфия лайт, запеченный спайс, цезарь, банзай, пицца маргарита",
+    "img": "/public/img/dish_1.jpg"
+  },
+  {
+    "id": 97,
+    "name": "Сет Сакура",
+    "category": "Сеты",
+    "price": 7590,
+    "description": "филадельфия лайт, цезарь, банзай, ролл жареный с сыром",
+    "img": "/public/img/dish_2.jpg"
+  },
+  {
+    "id": 98,
+    "name": "Сет Великолепная четверка (4 пиццы)",
+    "category": "Сеты",
+    "price": 7790,
+    "description": "маргарита, пепперони, 4 сезона, болоньезе",
+    "img": "/public/img/dish_3.jpg"
+  },
+  {
+    "id": 99,
+    "name": "Сет Сытный",
+    "category": "Сеты",
+    "price": 8090,
+    "description": "цезарь, темпура с лососем, пицца франческо, маргарита, сырные палочки, фри",
+    "img": "/public/img/dish_4.jpg"
+  },
+  {
+    "id": 100,
+    "name": "Сет Праздничный (60шт)",
+    "category": "Сеты",
+    "price": 8790,
+    "description": "филадельфия лайт, калифорния краб, тори хот, темпура овощной, сяке маки, каппа маки",
+    "img": "/public/img/dish_5.jpg"
+  },
+  {
+    "id": 101,
+    "name": "Сет Пицца бум",
+    "category": "Сеты",
+    "price": 7790,
+    "description": "цезарь, пицца маргарита, пепперони, мексика, фри",
+    "img": "/public/img/dish_6.jpg"
+  },
+  {
+    "id": 102,
+    "name": "Сет Аригато (40шт + 2 пиццы)",
+    "category": "Сеты",
+    "price": 9290,
+    "description": "филадельфия лайт, банзай темпура, сяке маки, каппа маки, пицца 4 сезона, маргарита, кола 1л",
+    "img": "/public/img/dish_7.jpg"
+  },
+  {
+    "id": 103,
+    "name": "Сет Традиционный (50шт)",
+    "category": "Сеты",
+    "price": 7690,
+    "description": "филадельфия, бонито, калифорния с сыром, каппа маки, цезарь запеченный",
+    "img": "/public/img/dish_8.jpg"
+  },
+  {
+    "id": 104,
+    "name": "Сет Фаворит (40шт + пицца)",
+    "category": "Сеты",
+    "price": 7290,
+    "description": "цезарь, банзай, темпура лосось, жареный с сыром, пицца пепперони",
+    "img": "/public/img/dish_9.jpg"
+  },
+  {
+    "id": 105,
+    "name": "Сет Студенческий (50шт + пицца)",
+    "category": "Сеты",
+    "price": 9090,
+    "description": "филадельфия лайт, мистер крабс, ясай запеченный, цезарь, каппа маки, пицца пепперони",
+    "img": "/public/img/dish_10.jpg"
+  },
+  {
+    "id": 106,
+    "name": "Сет Фудзияма (70шт)",
+    "category": "Сеты",
+    "price": 10090,
+    "description": "филадельфия лайт, цезарь ролл, калифорния с сыром, краб в кунжуте, темпура лосось, жареный с сыром, каппа маки, кола 1л",
+    "img": "/public/img/dish_11.jpg"
+  },
+  {
+    "id": 107,
+    "name": "Сет Нью-Йорк (50шт + пицца)",
+    "category": "Сеты",
+    "price": 8990,
+    "description": "филадельфия лайт, цезарь, жареный с сыром, мистер крабс, каппа маки, пицца маргарита",
+    "img": "/public/img/dish_12.jpg"
+  },
+  {
+    "id": 108,
+    "name": "Сет Для друзей (50шт + пицца)",
+    "category": "Сеты",
+    "price": 10090,
+    "description": "филадельфия лайт, аляска, бонито, цезарь, ясай темпура, пицца маргарита, грибная",
+    "img": "/public/img/dish_13.jpg"
+  },
+  {
+    "id": 109,
+    "name": "Сет Семейный (50шт + 2 пиццы)",
+    "category": "Сеты",
+    "price": 14290,
+    "description": "филадельфия, цезарь запеченный, мистер крабс, темпура лосось, каппа маки, пицца пепперони, 4 сезона, крылышки 12шт, фри",
+    "img": "/public/img/dish_14.jpg"
+  },
+  {
+    "id": 110,
+    "name": "Сет Рим (4 пиццы + крылышки)",
+    "category": "Сеты",
+    "price": 12390,
+    "description": "маргарита 2шт, пепперони 2шт, 4 сезона, сырный цыпленок, болоньезе",
+    "img": "/public/img/dish_15.jpg"
+  },
+  {
+    "id": 111,
+    "name": "Сет На компанию (70шт + 2 пиццы)",
+    "category": "Сеты",
+    "price": 15290,
+    "description": "филадельфия лайт, цезарь, цезарь запеченный, кунжутик, калифорния краб, ясай запеченный, темпура лосось, пицца пепперони, 4 сезона, крылышки 12шт, фри",
+    "img": "/public/img/dish_16.jpg"
+  },
+  {
+    "id": 112,
+    "name": "Сет Суши сити (100шт + 3 пиццы)",
+    "category": "Сеты",
+    "price": 17690,
+    "description": "мега сет суши сити 100шт и 3 пиццы",
+    "img": "/public/img/dish_17.jpg"
+  },
+  {
+    "id": 113,
+    "name": "Сет Суши сити BIG (100шт + 4 пиццы)",
+    "category": "Сеты",
+    "price": 23000,
+    "description": "супер гигантский сет",
+    "img": "/public/img/dish_18.jpg"
+  },
+  {
+    "id": 114,
+    "name": "City чизбургер",
+    "category": "Фастфуд",
+    "price": 1790,
+    "description": "мясная котлета 100% говядина, сыр чеддер",
+    "img": "/public/img/dish_19.jpg"
+  },
+  {
+    "id": 115,
+    "name": "Prince chiken бургер",
+    "category": "Фастфуд",
+    "price": 1690,
+    "description": "сочное куриное филе в панировке",
+    "img": "/public/img/dish_20.jpg"
+  },
+  {
+    "id": 116,
+    "name": "Батыр Чизбургер",
+    "category": "Фастфуд",
+    "price": 2700,
+    "description": "две сочные котлеты 100% говядины",
+    "img": "/public/img/dish_21.jpg"
+  },
+  {
+    "id": 117,
+    "name": "Чизбургер классика",
+    "category": "Фастфуд",
+    "price": 1690,
+    "description": "сочная котлета, сыр чеддер",
+    "img": "/public/img/dish_22.jpg"
+  },
+  {
+    "id": 118,
+    "name": "Удон с курицей",
+    "category": "Горячее",
+    "price": 1290,
+    "description": "пшеничная лапша удон с курицей и овощами",
+    "img": "/public/img/dish_23.jpg"
+  },
+  {
+    "id": 119,
+    "name": "Фетучини с грибами",
+    "category": "Горячее",
+    "price": 1890,
+    "description": "с курицей или копченой говядиной",
+    "img": "/public/img/dish_24.jpg"
+  },
+  {
+    "id": 120,
+    "name": "Тори тереяки",
+    "category": "Горячее",
+    "price": 1590,
+    "description": "куриное филе в соусе тереяки с рисом",
+    "img": "/public/img/dish_25.jpg"
+  },
+  {
+    "id": 121,
+    "name": "Рамен с курицей",
+    "category": "Горячее",
+    "price": 1490,
+    "description": "куриное филе, яйцо, зеленый лук, нори",
+    "img": "/public/img/dish_26.jpg"
+  },
+  {
+    "id": 122,
+    "name": "Тепаньяки с курицей",
+    "category": "Горячее",
+    "price": 1390,
+    "description": "рис, овощи, куриное филе",
+    "img": "/public/img/dish_27.jpg"
+  },
+  {
+    "id": 123,
+    "name": "Том ям (острый)",
+    "category": "Горячее",
+    "price": 2690,
+    "description": "креветки, кальмары, лосось, рис",
+    "img": "/public/img/dish_28.jpg"
+  },
+  {
+    "id": 124,
+    "name": "Наггетсы 5шт",
+    "category": "Закуски",
+    "price": 690,
+    "description": "хрустящие наггетсы 5шт",
+    "img": "/public/img/dish_29.jpg"
+  },
+  {
+    "id": 125,
+    "name": "Наггетсы 10шт",
+    "category": "Закуски",
+    "price": 1290,
+    "description": "хрустящие наггетсы 10шт",
+    "img": "/public/img/dish_30.jpg"
+  },
+  {
+    "id": 126,
+    "name": "Сырные палочки",
+    "category": "Закуски",
+    "price": 1090,
+    "description": "хрустящие сырные палочки",
+    "img": "/public/img/dish_31.jpg"
+  },
+  {
+    "id": 127,
+    "name": "Картофель фри (средний)",
+    "category": "Закуски",
+    "price": 550,
+    "description": "картофель фри",
+    "img": "/public/img/dish_32.jpg"
+  },
+  {
+    "id": 128,
+    "name": "Картофель фри (большой)",
+    "category": "Закуски",
+    "price": 750,
+    "description": "картофель фри",
+    "img": "/public/img/dish_33.jpg"
+  },
+  {
+    "id": 129,
+    "name": "Картофельные дольки",
+    "category": "Закуски",
+    "price": 690,
+    "description": "картофельные дольки",
+    "img": "/public/img/dish_34.jpg"
+  },
+  {
+    "id": 130,
+    "name": "Картофельные шарики",
+    "category": "Закуски",
+    "price": 790,
+    "description": "картофельные шарики",
+    "img": "/public/img/dish_35.jpg"
+  },
+  {
+    "id": 131,
+    "name": "Гренки",
+    "category": "Закуски",
+    "price": 790,
+    "description": "чесночные гренки",
+    "img": "/public/img/dish_36.jpg"
+  },
+  {
+    "id": 132,
+    "name": "Крылышки 5шт",
+    "category": "Крылышки",
+    "price": 1290,
+    "description": "хрустящие крылышки",
+    "img": "/public/img/dish_37.jpg"
+  },
+  {
+    "id": 133,
+    "name": "Крылышки 8шт",
+    "category": "Крылышки",
+    "price": 1790,
+    "description": "хрустящие крылышки",
+    "img": "/public/img/dish_38.jpg"
+  },
+  {
+    "id": 134,
+    "name": "Крылышки 12шт",
+    "category": "Крылышки",
+    "price": 2690,
+    "description": "хрустящие крылышки",
+    "img": "/public/img/dish_39.jpg"
+  },
+  {
+    "id": 135,
+    "name": "Coca-Cola 0.5л",
+    "category": "Напитки",
+    "price": 490,
+    "description": "прохладительный напиток",
+    "img": "/public/img/dish_40.jpg"
+  },
+  {
+    "id": 136,
+    "name": "Coca-Cola 1л",
+    "category": "Напитки",
+    "price": 700,
+    "description": "прохладительный напиток",
+    "img": "/public/img/dish_41.jpg"
+  },
+  {
+    "id": 137,
+    "name": "Вода ASU 0.5л без газа",
+    "category": "Напитки",
+    "price": 490,
+    "description": "минеральная вода",
+    "img": "/public/img/dish_42.jpg"
+  },
+  {
+    "id": 138,
+    "name": "Соевый соус (доп)",
+    "category": "Соусы",
+    "price": 150,
+    "description": "50мл",
+    "img": "/public/img/dish_43.jpg"
+  },
+  {
+    "id": 139,
+    "name": "Имбирь порция",
+    "category": "Соусы",
+    "price": 150,
+    "description": "30гр",
+    "img": "/public/img/dish_44.jpg"
+  },
+  {
+    "id": 140,
+    "name": "Васаби порция",
+    "category": "Соусы",
+    "price": 150,
+    "description": "15гр",
+    "img": "/public/img/dish_45.jpg"
+  },
+  {
+    "id": 141,
+    "name": "Соус сырный",
+    "category": "Соусы",
+    "price": 150,
+    "description": "порция соуса",
+    "img": "/public/img/dish_46.jpg"
+  },
+  {
+    "id": 142,
+    "name": "Соус чесночный",
+    "category": "Соусы",
+    "price": 150,
+    "description": "порция соуса",
+    "img": "/public/img/dish_47.jpg"
+  },
+  {
+    "id": 143,
+    "name": "Соус тереяке",
+    "category": "Соусы",
+    "price": 150,
+    "description": "порция соуса",
+    "img": "/public/img/dish_48.jpg"
+  },
+  {
+    "id": 144,
+    "name": "Соус барбекю",
+    "category": "Соусы",
+    "price": 150,
+    "description": "порция соуса",
+    "img": "/public/img/dish_49.jpg"
+  },
+  {
+    "id": 145,
+    "name": "Соус кетчуп",
+    "category": "Соусы",
+    "price": 150,
+    "description": "порция соуса",
+    "img": "/public/img/dish_50.jpg"
+  }
+];
+    let supabaseClient = null, cart = {}, paymentType = 'kaspi', currentCategory = 'all';
+
     async function init() {
       try {
         const res = await fetch('/api/config');
@@ -164,24 +1333,9 @@
           if (cfg.supabaseUrl && cfg.supabaseKey && window.supabase) supabaseClient = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseKey);
         }
       } catch (e) {}
-      await loadMenuData();
-    }
-    async function loadMenuData() {
-      if (supabaseClient) {
-        const { data } = await supabaseClient.from('menu').select('*').eq('is_available', true).order('id');
-        if (data && data.length > 0) { menuItems = data; renderMenu(); return; }
-      }
-      menuItems = [
-        { id: 1, name: 'Филадельфия классик', category: 'Роллы Холодные', price: 3290, description: 'лосось, сыр сливочный, огурец' },
-        { id: 2, name: 'Сет Самурай', category: 'Сеты', price: 7690, description: 'Филадельфия лайт, запеченный ясай, цезарь, банзай, пицца маргарита' },
-        { id: 3, name: 'Сет Аригато', category: 'Сеты', price: 9290, description: 'Филадельфия лайт, банзай темпура, саке маки, каппа маки, пицца 4 сезона, маргарита, кола 1л' },
-        { id: 4, name: 'Пицца Пепперони 33см', category: 'Пицца', price: 2190, description: 'сыр моцарелла, колбаса п/к халал, фирменный соус' },
-        { id: 5, name: 'Крылышки (12 шт)', category: 'Комбо', price: 2690, description: 'Сочные хрустящие крылышки' },
-        { id: 6, name: 'Картофель фри (средний)', category: 'Комбо', price: 550, description: 'Хрустящий золотистый картофель' },
-        { id: 7, name: 'Coca-Cola 1л', category: 'Напитки', price: 700, description: 'Освежающий напиток 1 литр' }
-      ];
       renderMenu();
     }
+
     function renderMenu() {
       const container = document.getElementById('menu-sections');
       const searchVal = document.getElementById('search-input').value.toLowerCase().trim();
@@ -190,11 +1344,31 @@
       const cats = [...new Set(filtered.map(i => i.category))];
       container.innerHTML = cats.map(c => `<section><h2 class="section-title">${c}</h2><div class="items-grid">${filtered.filter(i=>i.category===c).map(renderCard).join('')}</div></section>`).join('');
     }
+
     function renderCard(i) {
       const q = cart[i.id] || 0;
-      return `<div class="item-card"><div class="item-info"><div><div class="item-name">${i.name}</div><div class="item-desc">${i.description || ''}</div></div><div class="item-bottom"><div class="item-price">${i.price.toLocaleString()} ₸</div><div>${q === 0 ? `<button class="add-btn" onclick="addToCart(${i.id})">+ Добавить</button>` : `<div class="qty-controls"><button class="qty-btn" onclick="changeQty(${i.id}, -1)">−</button><span class="qty-num">${q}</span><button class="qty-btn" onclick="changeQty(${i.id}, 1)">+</button></div>`}</div></div></div></div>`;
+      return `
+        <div class="item-card">
+          <div class="item-img-wrap">
+            <img class="item-img" src="${i.img}" alt="${i.name}" onerror="this.src='/public/img/dish_1.jpg'">
+          </div>
+          <div class="item-body">
+            <div>
+              <div class="item-name">${i.name}</div>
+              <div class="item-desc">${i.description || ''}</div>
+            </div>
+            <div class="item-bottom">
+              <div class="item-price">${i.price.toLocaleString()} ₸</div>
+              <div>
+                ${q === 0 ? `<button class="add-btn" onclick="addToCart(${i.id})">+ Добавить</button>` : `<div class="qty-controls"><button class="qty-btn" onclick="changeQty(${i.id}, -1)">−</button><span class="qty-num">${q}</span><button class="qty-btn" onclick="changeQty(${i.id}, 1)">+</button></div>`}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
     }
-    function filterCategory(c) { currentCategory = c; document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b.innerText.includes(c) || (c === 'all' && b.innerText === 'Все'))); renderMenu(); }
+
+    function filterCategory(c) { currentCategory = c; document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b.innerText.includes(c) || (c === 'all' && b.innerText.startsWith('Все')))); renderMenu(); }
     function handleSearch() { renderMenu(); }
     function addToCart(id) { cart[id] = (cart[id] || 0) + 1; updateCartUI(); }
     function changeQty(id, d) { if (!cart[id]) return; cart[id] += d; if (cart[id] <= 0) delete cart[id]; updateCartUI(); }
